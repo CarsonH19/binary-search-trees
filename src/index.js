@@ -53,6 +53,31 @@ class Tree {
     this.root = insertNode(this.root, value);
   }
 
+  find(value) {
+    const findNode = (node, value) => {
+      // Base cases
+      if (node === null) {
+        return false;
+      }
+      if (node.data === value) {
+        return true;
+      }
+
+      // Recursive cases
+      if (value < node.data) {
+        // Search left subtree
+        return findNode(node.left, value);
+      } else if (value > node.data) {
+        // Search right subtee
+        return findNode(node.right, value);
+      } else {
+        // Value not found
+        return false;
+      }
+    };
+    return findNode(this.root, value);
+  }
+
   delete(value) {
     // Helper function: Recursively deletes the value
     const deleteNode = (node, value) => {
@@ -113,6 +138,7 @@ class Tree {
   rebalance() {}
 }
 
+// Function to display tree to console in a structured format
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
