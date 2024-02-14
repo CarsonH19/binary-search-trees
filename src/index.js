@@ -118,8 +118,10 @@ class Tree {
     };
     return findNode(this.root, value);
   }
-  
+
   levelOrder(callback) {
+    // Breadth-first traversal
+    // First-In-First-Out(FIFO)
     const result = [];
     if (!this.root) return result;
     // Initialize queue with the root node
@@ -139,20 +141,52 @@ class Tree {
 
       if (current.left) {
         // Add the left child to the queue
-        queue.push(current.left); 
-      } 
+        queue.push(current.left);
+      }
       if (current.right) {
         // Add the right child to the queue
+        queue.push(current.right);
       }
     }
     return result;
   }
 
-  inOrder(callback) {}
+  inOrder(callback) {
+    // Left - Root - Right : Tree Traversal
+    // Last-In-First-Out(LIFO)
+    const result = [];
+    if (!this.root) return result;
+    const traverse = (node) => {
+      if (node === null) {
+        return;
+      }
+      // Recursively traverse the left subtree
+      traverse(node.left);
+      if (callback) {
+        // Invoke the callback with the current node's data;
+        callback(node.data);
+      } else {
+        // Push the current node's data into the result array
+        result.push(node.data);
+      }
+      // Recursively traverse the right subtree
+      traverse(node.right);
+    };
+    // Start the recursive traversal from the root node
+    traverse(this.root)
+    return result;
+  } 
 
-  preOrder(callback) {}
+  preOrder(callback) {
+    // Root - Left - Right : Tree Traversal
+    // Last-In-First-Out(LIFO)
+    
+  }
 
-  postOrder(callback) {}
+  postOrder(callback) {
+    // Left - Right - Root : Tree Traversal
+    // Last-In-First-Out(LIFO)
+  }
 
   height(node) {}
 
