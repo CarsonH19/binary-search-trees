@@ -31,27 +31,34 @@ class Tree {
   }
 
   insert(value) {
+    const newNode = new Node(value);
+    console.log("New Node:", newNode.data);
     // Helper function: Recursively inserts the value
-    const insertNode = (node, value) => {
-      // Base case: Check if the current node is null
-      if (node === null) {
-        return new Node(value);
+    const insertNode = (node, newNodeToInsert) => {
+      // Base case: Check if the current node is null or undefined
+      if (node === null || node === undefined) {
+        return newNodeToInsert;
       }
+      console.log("Current Node:", node.data);
       // Recursive cases
-      if (value < node.data) {
-        node.left = insertNode(node.left, value);
-      } else if (value > node.data) {
-        node.right = insertNode(node.right, value);
+      if (newNodeToInsert.data < node.data) {
+        console.log("Inserting into the left subtree...");
+        node.left = insertNode(node.left, newNodeToInsert);
+      } else if (newNodeToInsert.data > node.data) {
+        console.log("Inserting into the right subtree...");
+        node.right = insertNode(node.right, newNodeToInsert);
       } else {
         // Duplicate value found, do not insert
-        console.log("Duplicate value found. Insertion rejected.");
+        console.log("Duplicate value found. Ignoring insertion.");
       }
       // Return the modified node
       return node;
     };
+
     // Changes this.root to include the new value in the tree
-    this.root = insertNode(this.root, value);
-  }
+    this.root = insertNode(this.root, newNode);
+    console.log("Root Node:", this.root.data);
+}
 
   delete(value) {
     // Helper function: Recursively deletes the value
@@ -63,7 +70,7 @@ class Tree {
       // Search for the node to delete
       if (value < node.data) {
         node.left = deleteNode(node.left, value);
-      } else if (value > node.date) {
+      } else if (value > node.data) {
         node.right = deleteNode(node.right, value);
       } else {
         // Node found, now handling deletion
@@ -154,7 +161,7 @@ class Tree {
     const result = [];
     if (!this.root) return result;
     const traverse = (node) => {
-      if (node === null) {
+      if (node === null || node === undefined) {
         return;
       }
       // Left
@@ -182,7 +189,7 @@ class Tree {
     const result = [];
     if (!this.root) return result;
     const traverse = (node) => {
-      if (node === null) {
+      if (node === null || node === undefined) {
         return;
       }
       // Root
@@ -209,7 +216,7 @@ class Tree {
     const result = [];
     if (!this.root) return result;
     const traverse = (node) => {
-      if (node === null) {
+      if (node === null || node === undefined) {
         return;
       }
       // Left
@@ -230,7 +237,7 @@ class Tree {
   }
 
   height(node) {
-    if (node === null) {
+    if (node === null || node === undefined) {
       // Height of an empty subtree is -1
       return -1;
     }
@@ -276,7 +283,14 @@ class Tree {
     return checkBalanced(this.root);
   }
 
-  rebalance() {}
+  rebalance() {
+    // Get the values of the tree sorted using inOrder()
+    const values = this.inOrder();
+    // Rebuild the tree from sorted values
+    console.log(tree.root);
+    this.root = this.buildTree(values);
+    console.log(tree.root);
+  }
 }
 
 // Function to display tree to console in a structured format
@@ -297,8 +311,8 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // Create a binary search tree from an array of random numbers < 100.
 const randomArray = () => {
   let array = [];
-  while (array.length < 100) {
-    const randomNumber = Math.round(Math.random() * 900) + 100;
+  while (array.length < 20) {
+    const randomNumber = Math.round(Math.random() * 98) + 1;
     array.push(randomNumber);
   }
   return array;
@@ -306,28 +320,37 @@ const randomArray = () => {
 
 const array = randomArray();
 const tree = new Tree(array);
+console.log(tree.root);
+console.log(prettyPrint(tree.root));
+
 // Confirm that the tree is balanced by calling isBalanced.
+console.log(`Balanced: ${tree.isBalanced(tree.root)}`);
+
 // Print out all elements in level, pre, post, and in order.
-console.log("Balanced: levelOrder");
-prettyPrint(tree.levelOrder(tree.root));
-console.log("Balanced: inOrder");
-prettyPrint(tree.inOrder(tree.root));
-console.log("Balanced: preOrder");
-prettyPrint(tree.preOrder(tree.root));
-console.log("Balanced: postOrder");
-prettyPrint(tree.postOrder(tree.root));
+console.log(`Balanced: levelOrder ${tree.levelOrder()}`);
+console.log(`Balanced: inOrder ${tree.inOrder()}`);
+console.log(`Balanced: preOrder ${tree.preOrder()}`);
+console.log(`Balanced: postOrder ${tree.postOrder()}`);
 
 // Unbalance the tree by adding several numbers > 100.
-// Confirm that the tree is unbalanced by calling isBalanced.
-// Balance the tree by calling rebalance.
-// Confirm that the tree is balanced by calling isBalanced.
-// Print out all elements in level, pre, post, and in order.
+tree.insert(123);
+tree.insert(155);
 
-console.log("levelOrder");
-prettyPrint(tree.levelOrder(tree.root));
-console.log("inOrder");
-prettyPrint(tree.inOrder(tree.root));
-console.log("preOrder");
-prettyPrint(tree.preOrder(tree.root));
-console.log("postOrder");
-prettyPrint(tree.postOrder(tree.root));
+
+// Confirm that the tree is unbalanced by calling isBalanced.
+console.log(`Unbalanced: ${tree.isBalanced(tree.root)}`);
+
+// Balance the tree by calling rebalance.
+tree.rebalance();
+console.log(`Rebalanced.`);
+
+// Confirm that the tree is balanced by calling isBalanced.
+console.log(`Balanced: ${tree.isBalanced(tree.root)}`);
+
+// Print out all elements in level, pre, post, and in order.
+console.log(`Balanced: levelOrder ${tree.levelOrder()}`);
+console.log(`Balanced: inOrder ${tree.inOrder()}`);
+console.log(`Balanced: preOrder ${tree.preOrder()}`);
+console.log(`Balanced: postOrder ${tree.postOrder()}`);
+
+console.log(prettyPrint(tree.root));
