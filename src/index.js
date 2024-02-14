@@ -53,31 +53,6 @@ class Tree {
     this.root = insertNode(this.root, value);
   }
 
-  find(value) {
-    const findNode = (node, value) => {
-      // Base cases
-      if (node === null) {
-        return false;
-      }
-      if (node.data === value) {
-        return true;
-      }
-
-      // Recursive cases
-      if (value < node.data) {
-        // Search left subtree
-        return findNode(node.left, value);
-      } else if (value > node.data) {
-        // Search right subtee
-        return findNode(node.right, value);
-      } else {
-        // Value not found
-        return false;
-      }
-    };
-    return findNode(this.root, value);
-  }
-
   delete(value) {
     // Helper function: Recursively deletes the value
     const deleteNode = (node, value) => {
@@ -119,9 +94,59 @@ class Tree {
     this.root = deleteNode(this.root, value);
   }
 
-  find(value) {}
+  find(value) {
+    const findNode = (node, value) => {
+      // Base cases
+      if (node === null) {
+        return false;
+      }
+      if (node.data === value) {
+        return true;
+      }
 
-  levelOrder(callback) {}
+      // Recursive cases
+      if (value < node.data) {
+        // Search left subtree
+        return findNode(node.left, value);
+      } else if (value > node.data) {
+        // Search right subtee
+        return findNode(node.right, value);
+      } else {
+        // Value not found
+        return false;
+      }
+    };
+    return findNode(this.root, value);
+  }
+  
+  levelOrder(callback) {
+    const result = [];
+    if (!this.root) return result;
+    // Initialize queue with the root node
+    const queue = [this.root];
+
+    while (queue.length > 0) {
+      // Remove the first node from the queue
+      const current = queue.shift();
+
+      if (callback) {
+        // Invoke the callback with the current node's data
+        callback(current.data);
+      } else {
+        // Push the current node's data into the result array
+        result.push(current.data);
+      }
+
+      if (current.left) {
+        // Add the left child to the queue
+        queue.push(current.left); 
+      } 
+      if (current.right) {
+        // Add the right child to the queue
+      }
+    }
+    return result;
+  }
 
   inOrder(callback) {}
 
