@@ -103,7 +103,6 @@ class Tree {
       if (node.data === value) {
         return true;
       }
-
       // Recursive cases
       if (value < node.data) {
         // Search left subtree
@@ -126,11 +125,9 @@ class Tree {
     if (!this.root) return result;
     // Initialize queue with the root node
     const queue = [this.root];
-
     while (queue.length > 0) {
       // Remove the first node from the queue
       const current = queue.shift();
-
       if (callback) {
         // Invoke the callback with the current node's data
         callback(current.data);
@@ -138,7 +135,6 @@ class Tree {
         // Push the current node's data into the result array
         result.push(current.data);
       }
-
       if (current.left) {
         // Add the left child to the queue
         queue.push(current.left);
@@ -233,9 +229,30 @@ class Tree {
     return result;
   }
 
-  height(node) {}
+  height(node) {
+    if (node === null) {
+      // Height of an empty subtree is -1
+      return -1;
+    }
+    // Recursively compute the height
+    const leftHeight = this.height(node.left);
+    const rightHeight = this.height(node.right);
+    // Return the maximum height of the left & right subtree plus 1
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
 
-  depth(node) {}
+  depth(node) {
+    const calculateDepth = (currentNode, currentDepth) => {
+      if (currentNode === null) {
+        // Depth of an empty node is -1
+        return currentDepth - 1;
+      }
+      // Recursively calculate the depth of the parent node
+      return calculateDepth(currentNode.parent, currentDepth + 1);
+    };
+    // Start calculating depth from 0
+    return calculateDepth(node, 0);
+  }
 
   isBalanced() {}
 
@@ -257,6 +274,40 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 // Example usage:
-const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// Create a binary search tree from an array of random numbers < 100.
+const randomArray = () => {
+  let array = [];
+  while (array.length < 100) {
+    const randomNumber = Math.round(Math.random() * 900) + 100;
+    array.push(randomNumber);
+  }
+  return array;
+};
+
+const array = randomArray();
 const tree = new Tree(array);
-prettyPrint(tree.root);
+// Confirm that the tree is balanced by calling isBalanced.
+// Print out all elements in level, pre, post, and in order.
+console.log("Balanced: levelOrder");
+prettyPrint(tree.levelOrder(tree.root));
+console.log("Balanced: inOrder");
+prettyPrint(tree.inOrder(tree.root));
+console.log("Balanced: preOrder");
+prettyPrint(tree.preOrder(tree.root));
+console.log("Balanced: postOrder");
+prettyPrint(tree.postOrder(tree.root));
+
+// Unbalance the tree by adding several numbers > 100.
+// Confirm that the tree is unbalanced by calling isBalanced.
+// Balance the tree by calling rebalance.
+// Confirm that the tree is balanced by calling isBalanced.
+// Print out all elements in level, pre, post, and in order.
+
+console.log("levelOrder");
+prettyPrint(tree.levelOrder(tree.root));
+console.log("inOrder");
+prettyPrint(tree.inOrder(tree.root));
+console.log("preOrder");
+prettyPrint(tree.preOrder(tree.root));
+console.log("postOrder");
+prettyPrint(tree.postOrder(tree.root));
