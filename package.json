@@ -1,0 +1,22 @@
+{
+  "name": "repository-template",
+  "version": "1.0.0",
+  "description": "Repository Template",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "pages": "git subtree push --prefix dist origin gh-pages"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.10.0",
+    "csv-loader": "^3.0.5",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4",
+    "xml-loader": "^1.2.1"
+  }
+}
