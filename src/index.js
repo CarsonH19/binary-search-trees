@@ -335,7 +335,10 @@ console.log(`Balanced: postOrder ${tree.postOrder()}`);
 // Unbalance the tree by adding several numbers > 100.
 tree.insert(123);
 tree.insert(155);
-
+tree.insert(188);
+tree.insert(145);
+tree.insert(120);
+tree.insert(111);
 
 // Confirm that the tree is unbalanced by calling isBalanced.
 console.log(`Unbalanced: ${tree.isBalanced(tree.root)}`);
