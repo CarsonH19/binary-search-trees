@@ -152,6 +152,7 @@ class Tree {
   }
 
   inOrder(callback) {
+    // Depth-first traversal
     // Left - Root - Right : Tree Traversal
     // Last-In-First-Out(LIFO)
     const result = [];
@@ -160,8 +161,9 @@ class Tree {
       if (node === null) {
         return;
       }
-      // Recursively traverse the left subtree
+      // Left
       traverse(node.left);
+      // Root
       if (callback) {
         // Invoke the callback with the current node's data;
         callback(node.data);
@@ -169,23 +171,66 @@ class Tree {
         // Push the current node's data into the result array
         result.push(node.data);
       }
-      // Recursively traverse the right subtree
+      // Right
       traverse(node.right);
     };
     // Start the recursive traversal from the root node
-    traverse(this.root)
+    traverse(this.root);
     return result;
-  } 
+  }
 
   preOrder(callback) {
+    // Depth-first traversal
     // Root - Left - Right : Tree Traversal
     // Last-In-First-Out(LIFO)
-    
+    const result = [];
+    if (!this.root) return result;
+    const traverse = (node) => {
+      if (node === null) {
+        return;
+      }
+      // Root
+      if (callback) {
+        // Invoke the callback with the current node's data;
+        callback(node.data);
+      } else {
+        // Push the current node's data into the result array
+        result.push(node.data);
+      }
+      // Left
+      traverse(node.left);
+      // Right
+      traverse(node.right);
+    };
+    traverse(this.root);
+    return result;
   }
 
   postOrder(callback) {
+    // Depth-first traversal
     // Left - Right - Root : Tree Traversal
     // Last-In-First-Out(LIFO)
+    const result = [];
+    if (!this.root) return result;
+    const traverse = (node) => {
+      if (node === null) {
+        return;
+      }
+      // Left
+      traverse(node.left);
+      // Right
+      traverse(node.right);
+      // Root
+      if (callback) {
+        // Invoke the callback with the current node's data;
+        callback(node.data);
+      } else {
+        // Push the current node's data into the result array
+        result.push(node.data);
+      }
+    };
+    traverse(this.root);
+    return result;
   }
 
   height(node) {}
