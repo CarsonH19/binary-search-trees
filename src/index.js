@@ -254,7 +254,27 @@ class Tree {
     return calculateDepth(node, 0);
   }
 
-  isBalanced() {}
+  isBalanced() {
+    const checkBalanced = (node) => {
+      if (node === null) {
+        return true; // An empty subtree is balance
+      }
+
+      // Calculate the height of the left and right subtrees
+      const leftHeight = this.height(node.left);
+      const rightHeight = this.height(node.right);
+
+      // Check if the difference in heights is greater than 1
+      if (Math.abs(leftHeight - rightHeight) > 1) {
+        // Tree is unbalanced
+        return false;
+      }
+      // Recursively check if both left and right subtrees are balanced
+      return checkBalanced(node.left) && checkBalanced(node.right);
+    };
+    // Start checking tree balance from the root node
+    return checkBalanced(this.root);
+  }
 
   rebalance() {}
 }
